@@ -1,13 +1,15 @@
+const Joi = require('joi');
+
 const validateMiddleware = (schema) => (req, res, next) => {
-  try {
-    const validatedData = schema.parse(req.body);
-    req.body = validatedData;
-    next();
-  } catch (error) {
+  const { error, value } = schema.validate(req.body);
+  if (error) {
     return res.status(400).json({
       message: "Validation error",
-      errors: error.message
+      errors: error.details[0].message
     });
   }
+  req.body = value;
+  next();
 };
-module.exports = validateMiddleware ;
+
+module.exports = validateMiddleware;

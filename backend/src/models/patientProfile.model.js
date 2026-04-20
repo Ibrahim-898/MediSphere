@@ -1,5 +1,6 @@
 const {DataTypes} = require('sequelize');
 const {sequelize} = require('../config/db');
+const User = require('./user.model');
 
 const Patient = sequelize.define('Patients',{
     id : {
@@ -12,11 +13,11 @@ const Patient = sequelize.define('Patients',{
         allowNull : false,
     },
      userId : {
-        type : DataTypes.STRING,
+        type : DataTypes.INTEGER,
         allowNull :false,
         references : {
             model : User,
-            id : id,
+            key : 'id',
         }
 
     },

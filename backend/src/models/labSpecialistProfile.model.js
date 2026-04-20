@@ -1,6 +1,6 @@
 const {sequelize} = require('../config/db');
 const {DataTypes} = require('sequelize');
-
+const User = require('./user.model');
 
 const LabSpecialist = sequelize.define('LabSpecialist',{
     id : {
@@ -10,13 +10,16 @@ const LabSpecialist = sequelize.define('LabSpecialist',{
         primaryKey : true,
     },
      userId : {
-        type : DataTypes.STRING,
+        type : DataTypes.INTEGER,
         allowNull :false,
         references : {
             model : User,
-            id : id,
+            key : 'id',
         }
-
+    },
+    fullName : {
+        type : DataTypes.STRING,
+        allowNull : false
     },
     bmdcNo : {
         type : DataTypes.STRING,

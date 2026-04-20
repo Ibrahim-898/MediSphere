@@ -1,12 +1,9 @@
-
-const {userModel} = require('../models/user.model');
+const userModel = require('../models/user.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const {patientProfileModel} = require('../models/patientProfile.model');
 const {doctorProfileModel} = require('../models/doctorsProfile.model');
 const {labSpecialistProfileModel} =require('../models/labSpecialistProfile.model');
-
-
 
 async function registerService(email,password,role) {
     const saltRounds = 10;
@@ -21,29 +18,30 @@ async function registerService(email,password,role) {
 }
 
 async function loginService(email,password) {
-    const user = userModel.findOne({where : email});
+    const user = await userModel.findOne({where : {email}});
     if(!user){
         throw new Error ("Email or Password is Wrong");
     }
-    const isValid = bcrypt.compare(password,user.password);
+    const isValid = await bcrypt.compare(password,user.password);
     if(!isValid){
          throw new Error ("Email or Password is Wrong");
     }
 
     const token = jwt.sign({
-        email : email,
-        id : user.id
+        id: user.id,
+        email: user.email,
+        role: user.role
     },
         process.env.JWT_SECRET,
         { expiresIn: "1d" }
-    
     );
 
-
     return {
-        user,token
+        user: { id: user.id, email: user.email, role: user.role },
+        token
     };  
 }
+
 async function  patientProfileService(userId,data) {
     const profile = await patientProfileModel.create({
         userId : userId,
@@ -59,5 +57,4 @@ async function  patientProfileService(userId,data) {
     
 }
 
-
-module.exports = {registerService,loginService}
+module.exports = {registerService,loginService};

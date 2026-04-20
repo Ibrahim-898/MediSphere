@@ -22,7 +22,7 @@ async function  loginUser(req,res) {
     if(!result){
        return res.status(400).json({message : "Email or Password is Wrong"});
     }
-        return response.status(200).json({message : "Login Successfull"});
+        return res.status(200).json({ message: 'Login successful', token: result.token, user: result.user });
     }
     catch(error){
         return res.status(500).json({message : error.message});

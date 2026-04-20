@@ -11,11 +11,11 @@ const Doctors = sequelize.define('Doctors',{
         primaryKey : true,
     },
     userId : {
-        type : DataTypes.STRING,
+        type : DataTypes.INTEGER,
         allowNull :false,
         references : {
             model : User,
-            id : id,
+            key : 'id',
         }
 
     },
