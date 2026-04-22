@@ -10,7 +10,7 @@ const app = express();
 
 // Security
 app.use(helmet());
-app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(cors({ origin: ['http://localhost:3001', 'http://localhost:3000'] }));
 app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 100 }));
 
 // Logging & Parsing
